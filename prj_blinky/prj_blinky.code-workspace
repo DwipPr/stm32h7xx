@@ -1,0 +1,30 @@
+{
+	"folders": [
+		{
+			"path": "."
+		}
+	],
+	"settings": {
+		"cortex-debug.armToolchainPath": "/home/andrey/Toolchains/arm-gnu-toolchain-11.3.rel1-x86_64-arm-none-eabi/bin",
+		"cortex-debug.gdbPath": "/home/andrey/Toolchains/arm-gnu-toolchain-11.3.rel1-x86_64-arm-none-eabi/bin/arm-none-eabi-gdb",
+		"cortex-debug.openocdPath": "/usr/bin/openocd",
+		"files.associations": {
+			"main.h": "c",
+			"stm32h7xx_ll_bus.h": "c",
+			"stm32h7xx_ll_exti.h": "c",
+			"stm32h7xx_ll_system.h": "c",
+			"stm32h7xx_ll_pwr.h": "c",
+			"stm32h7xx_ll_utils.h": "c",
+			"board.h": "c",
+			"stm32h7xx_ll_rcc.h": "c"
+		},
+		"cortex-debug.variableUseNaturalFormat": true,
+		"makefile.launchConfigurations": [
+			{
+				"cwd": "/home/andrey/st_mcu_projects/stm32h7xx/prj_blinky/build",
+				"binaryPath": "/home/andrey/st_mcu_projects/stm32h7xx/prj_blinky/build/blinky_h743.elf",
+				"binaryArgs": []
+			}
+		]
+	}
+}

@@ -1,5 +1,4 @@
-#include "board.h"
-#include "main.h"
+#include "System.h"
 
 #include "stm32h7xx_ll_rcc.h"
 #include "stm32h7xx_ll_bus.h"
@@ -8,7 +7,20 @@
 
 static void SystemClock_Config(void);
 
-void BSP_Init(void)
+#ifndef NVIC_PRIORITYGROUP_0
+#define NVIC_PRIORITYGROUP_0         ((uint32_t)0x00000007) /*!< 0 bit  for pre-emption priority,
+                                                                 4 bits for subpriority */
+#define NVIC_PRIORITYGROUP_1         ((uint32_t)0x00000006) /*!< 1 bit  for pre-emption priority,
+                                                                 3 bits for subpriority */
+#define NVIC_PRIORITYGROUP_2         ((uint32_t)0x00000005) /*!< 2 bits for pre-emption priority,
+                                                                 2 bits for subpriority */
+#define NVIC_PRIORITYGROUP_3         ((uint32_t)0x00000004) /*!< 3 bits for pre-emption priority,
+                                                                 1 bit  for subpriority */
+#define NVIC_PRIORITYGROUP_4         ((uint32_t)0x00000003) /*!< 4 bits for pre-emption priority,
+                                                                 0 bit  for subpriority */
+#endif
+
+void BSP_ClockConfig(void)
 {
     LL_APB4_GRP1_EnableClock(LL_APB4_GRP1_PERIPH_SYSCFG);
     NVIC_SetPriorityGrouping(NVIC_PRIORITYGROUP_4);
@@ -18,7 +30,7 @@ void BSP_Init(void)
     return;
 }
 
-void SystemClock_Config(void)
+static void SystemClock_Config(void)
 {
     LL_FLASH_SetLatency(LL_FLASH_LATENCY_4);
     while(LL_FLASH_GetLatency()!= LL_FLASH_LATENCY_4) {}
@@ -63,16 +75,15 @@ void SystemClock_Config(void)
     LL_SetSystemCoreClock(480000000);
 }
 
-// /**
-//   * @brief  This function is executed in case of error occurrence.
-//   * @retval None
-//   */
-// void Error_Handler(void)
-// {
-//   /* USER CODE BEGIN Error_Handler_Debug */
-//   /* User can add his own implementation to report the HAL error return state */
-//     __disable_irq();
-//     while(1){}
-//   /* USER CODE END Error_Handler_Debug */
-// }
-
+/**
+  * @brief  This function is executed in case of error occurrence.
+  * @retval None
+  */
+void Error_Handler(void)
+{
+  /* USER CODE BEGIN Error_Handler_Debug */
+  /* User can add his own implementation to report the HAL error return state */
+    __disable_irq();
+    while(1){}
+  /* USER CODE END Error_Handler_Debug */
+}
