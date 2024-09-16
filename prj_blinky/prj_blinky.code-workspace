@@ -23,7 +23,8 @@
 			"systemapi.h": "c",
 			"system.h": "c",
 			"stm32h7xx.h": "c",
-			"stm32_assert.h": "c"
+			"stm32_assert.h": "c",
+			"stat.h": "c"
 		},
 		"cortex-debug.variableUseNaturalFormat": true
 	}

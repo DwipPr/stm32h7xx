@@ -1,21 +1,20 @@
 {
     "configurations": [
         {
-            "name": "vscode_stm32_c_cpp_properties",
-            "compilerPath": "../../../Toolchains/arm-gnu-toolchain-11.3.rel1-x86_64-arm-none-eabi/bin/arm-none-eabi-gcc",
+            "name": "Linux",
             "includePath": [
-                "${workspaceRoot}/inc/",
+                "${workspaceFolder}/**",
                 "../../SDK/stm32h7xx_hal_driver/Inc",
                 "../../SDK/cmsis_device_h7/Include",
-                "../../SDK/cmsis-core/Include",
-                "../BSP/System"
+                "../../SDK/cmsis-core/Include"
             ],
             "defines": [
                 "STM32H743xx"
             ],
+            "compilerPath": "../../../Toolchains/arm-gnu-toolchain-11.3.rel1-x86_64-arm-none-eabi/bin/arm-none-eabi-gcc",
             "cStandard": "c11",
-            "cppStandard": "c++17",
-            "intelliSenseMode": "linux-gcc-arm",
+            "cppStandard": "gnu++11",
+            "intelliSenseMode": "linux-gcc-x64",
             "configurationProvider": "ms-vscode.makefile-tools"
         }
     ],

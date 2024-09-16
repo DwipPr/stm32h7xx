@@ -32,9 +32,10 @@ RELEASE_DIR = $(GEN_OUT_DIR)/release
 #################################################
 
 #################################################
-# Define SDK directories
+# Define SDK&BSP directories
 #################################################
 SDK_DIR = ../../SDK
+BSP_DIR = ../BSP
 #################################################
 
 #################################################
@@ -94,36 +95,19 @@ PRJ_SRC_DIR = src
 PRJ_SOURCES = $(wildcard $(PRJ_SRC_DIR)/*.c)
 $(info PRJ_SOURCES = $(PRJ_SOURCES))
 ##############################################
+
+##############################################
 # Project include directories
 ##############################################
 PRJ_INC_DIR = inc/
 $(info PRJ_INC_DIR = $(PRJ_INC_DIR))
 ##############################################
 
-
-##############################################
-# SDK include directories
-##############################################
-# SDK_DIR = ../../SDK
-# CMSIS_CORE_DIR = $(SDK_DIR)/cmsis-core/Include
-# CMSIS_H7_DIR = $(SDK_DIR)/cmsis_device_h7/Include
-# HAL_LL_INC_DIR = $(SDK_DIR)/stm32h7xx_hal_driver/Inc
-##############################################
-# SDK/ASM source files/directories
-##############################################
-# ASM_FILE_DIR = $(CMSIS_H7_DIR)/Source/Templates/gcc/startup_stm32h743xx.s
-# SDK_SRC_DIR = $(SDK_DIR)/stm32h7xx_hal_driver/Src
-# SDK_SOURCES = $(wildcard $(SDK_SRC_DIR)*.c)
-# SDK_SOURCES += $(CMSIS_H7_DIR)/Source/Templates/system_stm32h7xx.c
-##############################################
-
 C_INCLUDES += $(PRJ_INC_DIR)
+C_INCLUDES += $(shell find $(BSP_DIR) -maxdepth 2 -name '*.h' -exec dirname {} \; | sort -u | sed 's|$$|/|')
 C_INCLUDES := $(addprefix -I, $(C_INCLUDES))
-# C_INCLUDES += $(CMSIS_H7_DIR)
-# C_INCLUDES += $(HAL_LL_INC_DIR)
-# C_INCLUDES += $(CMSIS_CORE_DIR)
-# C_SOURCES += $(SDK_SOURCES)
 C_SOURCES += $(PRJ_SOURCES)
+$(info C_INCLUDES = $(C_INCLUDES))
 
 ##############################################
 # Linker file directory
@@ -133,9 +117,7 @@ LDSCRIPT = STM32H743IITX_FLASH.ld
 
 include sdk.mk
 include ../BSP/bsp.mk
-# а также добавить путь до cmsis'а
 # include programmer.mk
-# а вот тут описывать цели зависящие от программатора
 
 ##############################################
 # Rules and make targets
@@ -145,15 +127,9 @@ all: sdk_core bsp_build $(OUT_DIR)/$(TARGET).elf $(OUT_DIR)/$(TARGET).hex $(OUT_
 # list of objects
 OBJECTS = $(addprefix $(OBJ_DIR)/,$(notdir $(C_SOURCES:.c=.o)))
 vpath %.c $(sort $(dir $(C_SOURCES)))
-# list of ASM program objects
-# OBJECTS += $(addprefix $(OBJ_DIR)/,$(notdir $(ASM_FILE_DIR:.s=.o)))
-# vpath %.s $(sort $(dir $(ASM_FILE_DIR)))
 
 $(OBJ_DIR)/%.o: %.c makefile | $(OBJ_DIR)
 	$(ARM_CC) -c $(CFLAGS) -Wa,-a,-ad,-alms=$(OBJ_DIR)/$(notdir $(<:.c=.lst)) $< -o $@
-
-# $(OBJ_DIR)/%.o: %.s makefile | $(OBJ_DIR)
-# 	$(ARM_AS) -c $(CFLAGS) $< -o $@
 
 $(OUT_DIR)/$(TARGET).elf: $(OBJECTS) makefile | $(OUT_DIR) $(OBJ_DIR)
 	$(ARM_CC) $(OBJECTS) $(LDFLAGS) -o $@
