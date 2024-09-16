@@ -22,7 +22,7 @@ static void SystemClock_Config(void);
 
 void BSP_ClockConfig(void)
 {
-    LL_APB4_GRP1_EnableClock(LL_APB4_GRP1_PERIPH_SYSCFG);
+    LL_APB4_GRP1_EnableClock(LL_APB4_GRP1_PERIPH_SYSCFG); // bus
     NVIC_SetPriorityGrouping(NVIC_PRIORITYGROUP_4);
     NVIC_SetPriority(SysTick_IRQn, NVIC_EncodePriority(NVIC_GetPriorityGrouping(), 15, 0));
 
@@ -32,12 +32,12 @@ void BSP_ClockConfig(void)
 
 static void SystemClock_Config(void)
 {
-    LL_FLASH_SetLatency(LL_FLASH_LATENCY_4);
+    LL_FLASH_SetLatency(LL_FLASH_LATENCY_4); // system
     while(LL_FLASH_GetLatency()!= LL_FLASH_LATENCY_4) {}
-    LL_PWR_ConfigSupply(LL_PWR_LDO_SUPPLY);
+    LL_PWR_ConfigSupply(LL_PWR_LDO_SUPPLY); // pwr
     LL_PWR_SetRegulVoltageScaling(LL_PWR_REGU_VOLTAGE_SCALE0);
     while (LL_PWR_IsActiveFlag_VOS() == 0) {}
-    LL_RCC_HSE_Enable();
+    LL_RCC_HSE_Enable(); // rcc
 
     /* Wait till HSE is ready */
     while(LL_RCC_HSE_IsReady() != 1) {}
@@ -70,7 +70,7 @@ static void SystemClock_Config(void)
     LL_RCC_SetAPB3Prescaler(LL_RCC_APB3_DIV_2);
     LL_RCC_SetAPB4Prescaler(LL_RCC_APB4_DIV_2);
 
-    LL_Init1msTick(480000000);
+    LL_Init1msTick(480000000); // utils (system)
 
     LL_SetSystemCoreClock(480000000);
 }
